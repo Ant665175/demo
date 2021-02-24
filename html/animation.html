@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画示例</title>
+    <style>
+        .wrap {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 50px auto;
+            background: #000;
+        }
+        
+        .am-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -4px;
+            margin-left: -4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #188eee;
+        }
+        
+        @keyframes flicker {
+            0% {}
+            75% {
+                width: 60px;
+                height: 60px;
+                opacity: 1;
+            }
+            100% {
+                width: 80px;
+                height: 80px;
+                opacity: 0;
+            }
+        }
+        
+        .am-box div[class^="pulse"] {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #188eee;
+            animation: flicker 1.2s linear infinite;
+        }
+        
+        .am-box div.pulse2 {
+            animation-delay: 0.4s;
+        }
+        
+        .am-box div.pulse3 {
+            animation-delay: 0.8s;
+        }
+        /* 3D变换空间 */
+        /* body {
+            perspective: 400px;
+        }
+         */
+        
+        .wrap-3d {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 100px auto;
+            transition: all .4s;
+            transform-style: preserve-3d;
+        }
+        
+        .box3d-wrap:hover .wrap-3d {
+            /* transform: rotate3d(0, 1, 0, 180deg); */
+            transform: rotateY(180deg);
+        }
+        
+        .wrap-3d div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 200px;
+            font-size: 30px;
+            color: aliceblue;
+        }
+        
+        .box1 {
+            background-color: #188eee;
+            z-index: 1;
+        }
+        
+        .box2 {
+            background-color: pink;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="am-box">
+            <div class="pulse1"></div>
+            <div class="pulse2"></div>
+            <div class="pulse3"></div>
+        </div>
+    </div>
+    <div class="box3d-wrap">
+        <div class="wrap-3d">
+            <div class="box1">00003333333</div>
+            <div class="box2">456</div>
+        </div>
+    </div>
+</body>
+
+</html>
