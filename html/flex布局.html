@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flex布局</title>
+    <link rel="stylesheet" href="">
+    <style>
+        .flexbox-wrap {
+            display: flex;
+            flex-direction: row;
+            width: 1200px;
+            height: 600px;
+            margin: 0 auto;
+            background-color: bisque;
+        }
+        
+        .flexbox-wrap a {
+            /* flex: 1; */
+            flex-grow: 1;
+        }
+        
+        .flexbox-wrap a:nth-child(even) {
+            flex-grow: 2;
+            background-color: blueviolet;
+        }
+    </style>
+    <script>
+        var operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+
+        var money = 0;
+        do {
+            switch (operate) {
+                case '1':
+                    alert('您当前账户余额为： ' + money);
+                    operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+                    break;
+                case '2':
+                    var in_money = parseFloat(prompt('请输入存款金额:'));
+                    money = money + in_money;
+                    alert('本次存款金额' + in_money + '\n您当前账户余额为： ' + money);
+                    operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+                    break;
+                case '3':
+                    var out_money = parseFloat(prompt('请输入取款金额:'));
+                    money = money - out_money;
+                    alert('本次取款金额' + out_money + '\n您当前账户余额为： ' + money);
+                    operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+                    break;
+                case '4':
+                    alert('再见');
+                    break;
+                default:
+                    operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+
+
+            }
+        } while (operate !== '4');
+
+        var operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+
+        // var money = 0;
+        // while (operate !== '4') {
+        //     switch (operate) {
+        //         case '1':
+        //             alert('您当前账户余额为： ' + money);
+        //             operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+        //             break;
+        //         case '2':
+        //             var in_money = parseFloat(prompt('请输入存款金额:'));
+        //             money = money + in_money;
+        //             alert('本次存款金额' + in_money + '\n您当前账户余额为： ' + money);
+        //             operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+        //             break;
+        //         case '3':
+        //             var out_money = parseFloat(prompt('请输入取款金额:'));
+        //             money = money - out_money;
+        //             alert('本次取款金额' + out_money + '\n您当前账户余额为： ' + money);
+        //             operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+        //             break;
+        //             //         case '4':
+        //             //             alert('再见');
+        //             //             break;
+        //         default:
+        //             operate = prompt('选择操作：\n 1.查询余额\n 2.存钱\n 3.取钱\n 4.退出');
+
+
+        //     }
+        // };
+        // alert('再见');
+    </script>
+</head>
+
+<body>
+    <div class="flexbox-wrap">
+        <a href="#">1-item</a><a href="#">2-item</a><a href="#">3-item</a><a href="#">4-item</a><a href="#">5-item</a><a href="#">6-item</a>
+    </div>
+</body>
+
+</html>
