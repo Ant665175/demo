@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        
+        li {
+            list-style: none;
+            line-height: 50px;
+            text-align: center;
+        }
+        
+        .wrap {
+            width: 600px;
+            margin: 0 auto;
+            background-color: slategrey;
+        }
+        
+        .wrap>ul {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .wrap>ul li {
+            width: 120px;
+        }
+        
+        .cell-wrap {
+            border: 1px solid #ddd;
+            display: none;
+        }
+        
+        .box2 {
+            background-color: thistle;
+            margin-top: 100px;
+        }
+        
+        table {
+            text-align: center;
+            border-collapse: collapse;
+        }
+        
+        td,
+        th {
+            border: 1px solid black;
+        }
+        
+        thead th {
+            width: 100px;
+        }
+        
+        img {
+            position: absolute;
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="./../img/angel.gif" alt="">
+    <div class="wrap nav-wrap">
+        <ul class="nav">
+            <li>
+                <a href="">item-1</a>
+                <ul class="cell-wrap">
+                    <li>con-1</li>
+                    <li>con-2</li>
+                    <li>con-3</li>
+                </ul>
+            </li>
+            <li>
+                <a href="">item-1</a>
+                <ul class="cell-wrap">
+                    <li>con-1</li>
+                    <li>con-2</li>
+                    <li>con-3</li>
+                </ul>
+            </li>
+            <li>
+                <a href="">item-1</a>
+                <ul class="cell-wrap">
+                    <li>con-1</li>
+                    <li>con-2</li>
+                    <li>con-3</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap box2">
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <button>发布</button>
+        <ul class="liuyan">
+            <li>1111111</li>
+        </ul>
+    </div>
+    <div class="wrap table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>科目</th>
+                    <th>得分</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="wrap">
+        <ul class="e-wrap">
+            <li>0001-item</li>
+            <li>0002-item</li>
+            <li>0003-item</li>
+            <li>0004-item</li>
+            <li>0005-item</li>
+        </ul>
+    </div>
+
+    <script>
+        var nav = document.querySelector('.nav');
+        var navList = nav.children;
+        var listLen = navList.length;
+        for (var i = 0; i < listLen; i++) {
+            navList[i].setAttribute('data-index', i);
+            navList[i].onmouseover = function() {
+                console.log(this.dataset.index);
+                this.children[1].style.display = 'block';
+            }
+
+            navList[i].onmouseout = function() {
+                this.children[1].style.display = 'none';
+            }
+        }
+
+        //   
+        var text = document.querySelector('textarea');
+        var oBtn = document.querySelector('.wrap button');
+        var oLy = document.querySelector('.liuyan');
+        oBtn.onclick = function() {
+                var li = document.createElement('li');
+                li.innerHTML = text.value;
+                oLy.appendChild(li);
+                console.log(text.value)
+            }
+            // 表格操作
+        var dates = [{
+            name: '魏璎珞',
+            subject: 'javascript',
+            score: 100
+        }, {
+            name: '弘历',
+            subject: 'javascript',
+            score: 96
+        }, {
+            name: '傅恒',
+            subject: 'javascript',
+            score: 90
+        }, {
+            name: '明玉',
+            subject: 'javascript',
+            score: 92
+        }]
+
+        var tb = document.querySelector('tbody');
+        var len = dates.length;
+        for (var i = 0; i <= len - 1; i++) {
+            // 创建行
+            var cTr = document.createElement('tr');
+            // 创建单元格
+            for (var k in dates[i]) {
+                var cTd = document.createElement('td');
+                cTd.innerHTML = dates[i][k];
+                cTr.appendChild(cTd);
+            }
+            tb.appendChild(cTr);
+            // 创建删除
+            var del = document.createElement('td');
+            del.innerHTML = '<a href="javascript:;">删除</a>';
+            cTr.appendChild(del);
+        }
+        var oDel = tb.querySelectorAll('a');
+        for (var i = 0; i <= oDel.length - 1; i++) {
+            oDel[i].setAttribute('data-index', i);
+            // oDel[i].onclick = function() {
+            //     var index = this.dataset.index;
+            //     tb.removeChild(this.parentNode.parentNode)
+            // }
+
+            oDel[i]['onclick'] = function() {
+                var index = this.dataset.index;
+                tb.removeChild(this.parentNode.parentNode);
+                console.log('["onclick"]')
+            }
+        }
+
+
+        // 时间委托
+        var oUl = document.querySelector('.e-wrap');
+        var handle = function(e) {
+            e = e || window.event;
+            var tag = e.target;
+            tag.innerHTML = '哈哈哈哈哈';
+            tag.style.backgroundColor = '#188eee';
+            console.log(e)
+        }
+        oUl.addEventListener('click', handle, false);
+
+        var oImg = document.querySelector('img');
+        var angell = function(e) {
+            e = e || window.event;
+            var x = e.pageX;
+            var y = e.pageY;
+            oImg.style.top = y + 'px';
+            oImg.style.left = x + 'px';
+        }
+        document.addEventListener('mousemove', angell, false);
+
+        document.addEventListener('keydown', function(e) {
+            console.log(e.keyCode, e.key)
+        })
+
+        setTimeout(() => {
+            clearInterval(timer);
+            console.log('5秒后清除定时器');
+        }, 5000);
+
+
+        var timer = setInterval(() => {
+            console.log('setInterval 每隔一秒打印一次');
+        }, 1000);
+    </script>
+</body>
+
+</html>
