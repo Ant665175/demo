@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图</title>
+    <style>
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        .banner-wrap {
+            width: 533px;
+            height: 300px;
+            margin: 0 auto;
+            /* overflow: hidden; */
+        }
+        
+        .banner-con {
+            position: relative;
+            width: 533px;
+            height: 300px;
+            transition: all 0.5s ease 0;
+            overflow: hidden;
+        }
+        
+        .banner-wrap .banner-box {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            top: 0;
+            left: 0;
+        }
+        
+        .banner-wrap .btn-a {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 35px;
+            height: 35px;
+            text-decoration: none;
+            line-height: 35px;
+            text-align: center;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transition: all 0.5s;
+        }
+        
+        .banner-wrap .btn-prev {
+            left: 0;
+            border-radius: 0 50% 50% 0;
+        }
+        
+        .banner-wrap .btn-next {
+            right: 0;
+            border-radius: 50% 0 0 50%;
+        }
+        
+        .banner-con:hover .btn-a {
+            /* display: block; */
+            opacity: 100%;
+        }
+        
+        .banner-con img {
+            vertical-align: middle;
+        }
+        
+        .list-circle {
+            position: absolute;
+            bottom: 20px;
+            left: 50px;
+        }
+        
+        .list-circle a {
+            float: left;
+            width: 12px;
+            height: 12px;
+            border: 2px solid white;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .list-circle .current {
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='banner-wrap'>
+        <div class="banner-con">
+            <ul class="banner-box">
+                <li>
+                    <a href="javascript:;"><img src="./../img/01.png" alt=""></a>
+                </li>
+                <li>
+                    <a href="javascript:;"><img src="./../img/02.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="javascript:;"><img src="./../img/03.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="javascript:;"><img src="./../img/04.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="javascript:;"><img src="./../img/05.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="javascript:;"><img src="./../img/06.jpg" alt=""></a>
+                </li>
+            </ul>
+            <a class="btn-a btn-prev" data-index="0" href="javascript:;">&lt;</a>
+            <a class="btn-a btn-next" data-index="1" href="javascript:;">&gt;</a>
+            <div class="list-circle">
+            </div>
+        </div>
+    </div>
+    <script>
+        // 轮播图wrap
+        var oCon = document.querySelector('.banner-con');
+        var oBox = document.querySelector('.banner-box');
+        var oPrev = document.querySelector('.btn-prev');
+        var oNext = document.querySelector('.btn-next');
+        // 圆点个数
+        var num = oBox.children.length;
+        // 圆点父级
+        var oListCircle = document.querySelector('.list-circle');
+        var curIndex = 0;
+        // circle 控制小圆圈的播放
+        var circle = 0;
+        var w = oCon.offsetWidth;
+        var flag = true; // 节流阀开关
+        var isFlag = function() { //给动画执行完毕回调使用
+            flag = true;
+            // console.log('执行回调');
+        }
+
+        // 鼠标经过显示 左右  停止自动播放
+        oCon.addEventListener('mouseover', function() {
+            // oPrev.style.opacity = '100%';
+            // oNext.style.opacity = '100%';
+            // 鼠标悬浮经过停止自动播放
+            clearInterval(timer);
+        })
+
+        oCon.addEventListener('mouseleave', function() {
+            timer = setInterval(() => {
+                oNext.click(); // 调用点击事件
+            }, 2000);
+        })
+
+        // 封装一个动画函数
+        function animate(obj, target, callback) {
+            clearInterval(obj.timer);
+            obj.timer = setInterval(() => {
+                var step = (target - obj.offsetLeft) / 10;
+                if (step > 0) {
+                    step = Math.ceil(step);
+                } else {
+                    step = Math.floor(step);
+                }
+                obj.style.left = obj.offsetLeft + step + 'px';
+                if (obj.offsetLeft === target) {
+                    clearInterval(obj.timer);
+                    callback && callback();
+                }
+            }, 20);
+        }
+        // 动态添加底部圆点
+        for (var i = 0; i < num; i++) {
+            var li = document.createElement('a');
+            li.setAttribute('data-index', i);
+            li.addEventListener('click', function() {
+                // 排他思想
+                oListCircle.children[circle].className = '';
+                // 重新赋值
+                curIndex = this.dataset.index;
+                circle = this.dataset.index;
+                this.className = 'current';
+                animate(oBox, -curIndex * w, isFlag);
+            })
+            oListCircle.appendChild(li);
+        }
+
+        // 克隆第一张图片 到最后
+        var firstImg = oBox.children[0].cloneNode(true);
+        oBox.appendChild(firstImg);
+        // 先克隆 再获取轮播图个数
+        var len = oBox.children.length;
+        // 给第一个圆点设置 选中样式
+        oListCircle.children[circle].className = 'current';
+        // 点击下一个
+        oNext.addEventListener('click', function() {
+            if (flag) {
+                flag = false;
+                oListCircle.children[circle].className = '';
+                circle++;
+                if (circle == num) {
+                    circle = 0;
+                }
+                // console.log(len)
+                if (curIndex == len - 1) {
+                    // 无缝滚动原理
+                    // 当走到最后一张时 再点击快速的不做动画的回到第一张 并且从0开始再计数
+                    curIndex = 0;
+                    oBox.style.left = 0;
+                }
+                curIndex++;
+                oListCircle.children[circle].className = 'current';
+                animate(oBox, -curIndex * w, isFlag);
+            }
+        })
+
+        // 点击上一个
+        oPrev.addEventListener('click', function() {
+            if (flag) {
+                flag = false;
+                oListCircle.children[circle].className = '';
+                circle--;
+                if (circle < 0) {
+                    circle = num - 1;
+                }
+                console.log(len)
+                if (curIndex == 0) {
+                    // 无缝滚动原理
+                    // 当走到最后一张时 再点击快速的不做动画的回到第一张 并且从0开始再计数
+                    curIndex = len - 1;
+                    oBox.style.left = curIndex * -w + 'px';
+                }
+                curIndex--;
+                oListCircle.children[circle].className = 'current';
+                animate(oBox, -curIndex * w, isFlag);
+            }
+        })
+
+        // 自动播放功能 其实就是相当于点击了右侧按钮
+        // 设置定时器自动调用右侧按钮点击事件
+        var timer = setInterval(() => {
+            oNext.click(); // 调用点击事件
+        }, 2000);
+
+        // 节流阀
+    </script>
+</body>
+
+</html>

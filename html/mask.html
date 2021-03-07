@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遮罩登录模态框</title>
+    <style>
+        .login-btn {
+            margin: 0 auto;
+            width: 100px;
+            height: 50px;
+            font-size: 30px;
+            line-height: 50px;
+            color: #666;
+        }
+        
+        .mask-wrap {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .login-info {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 350px;
+            /* margin-top: -175px;
+            margin-left: -250px; */
+            transform: translate(-50%, -50%);
+            border: 1px solid black;
+            background-color: #fff;
+        }
+        
+        .login-info .title {
+            height: 50px;
+            text-align: center;
+            font-size: 26px;
+            line-height: 50px;
+        }
+        
+        .login-info .user-name,
+        .login-info .pw {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        
+        .login-info label {
+            width: 80px;
+            padding-right: 15px;
+            text-align: right;
+            line-height: 40px;
+        }
+        
+        .login-info input {
+            width: 300px;
+            border: none;
+            border-bottom: 1px solid #188eee;
+            outline: none;
+        }
+        
+        .login-info .login {
+            width: 100px;
+            height: 50px;
+            margin: 50px auto;
+            text-align: center;
+            line-height: 50px;
+            background: #188eee;
+        }
+        
+        .login-info span {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 50px;
+            height: 50px;
+            /* border: 1px solid black; */
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-btn">请登录</div>
+    <div class="mask-wrap">
+        <div class="login-info">
+            <div class="title">登录</div>
+            <div class="user-name">
+                <label for="">用户名:</label>
+                <input type="text">
+            </div>
+            <div class="pw">
+                <label for="">密码:</label>
+                <input type="password">
+            </div>
+            <div class="login">登录</div>
+            <span class='close'>关闭</span>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+            var oLogin = document.querySelector('.login-btn');
+            var oLoginBox = document.querySelector('.login-info');
+            var oMask = document.querySelector('.mask-wrap');
+            var oTitle = document.querySelector('.title');
+            var oClose = document.querySelector('.close');
+            oLogin.addEventListener('click', function() {
+                oMask.style.display = 'block';
+                oClose.addEventListener('click', function() {
+                    oMask.style.display = 'none';
+                });
+                oTitle.addEventListener('mousedown', function(e) {
+                    e = e || window.event;
+                    var x = e.pageX - oLoginBox.offsetLeft;
+                    var y = e.pageY - oLoginBox.offsetTop;
+                    var handle = function(e) {
+                        e = e || window.event;
+                        oLoginBox.style.left = e.pageX - x + 'px';
+                        oLoginBox.style.top = e.pageY - y + 'px';
+                    }
+                    document.addEventListener('mousemove', handle, false);
+                    document.addEventListener('mouseup', function() {
+                        document.removeEventListener('mousemove', handle)
+                    })
+                }, false);
+            })
+        }
+    </script>
+</body>
+
+</html>
